@@ -1,0 +1,12 @@
+{% if user.is_authenticated %}
+<h2>Welcome <a href={%url 'profile' user_id=user.id%}>{{user.username}}</a>,</h2>
+<p>Your user name is, <b>{{user.username}}</b></p>
+<a href={%url 'addtweet' user_id=user.id%}><button>Add Tweet</button></a>
+
+{%for tweet in tweet_data%} 
+<p><a href={%url 'profile' user_id=tweet.author.id%}>{{tweet.author}}</a> | <a href={%url 'tweet_view' tweet_id=tweet.id%}>{{tweet.tweet}}</a> | {{tweet.date}}</p>
+{%endfor%}
+<hr />
+<a href={%url 'notif'%}><button>Notifications</button></a>
+<a href={%url 'logout_url'%}><button>Logout</button></a>
+{%endif%}

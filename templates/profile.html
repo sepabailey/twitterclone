@@ -1,0 +1,17 @@
+{%for tweet in user_tweets%}
+<p>{{tweet.author}} | {{tweet.tweet}} | {{tweet.date}}</p>
+
+
+{%endfor%}
+
+<!-- Peter helped clear up the display of follow/unfollow -->
+{%if is_following%}
+<a href={%url 'unfollow' id=twitteruser.id %}><button>Unfollow</button></a>
+{%else%}
+<a href={%url 'follow' id=twitteruser.id %}><button>Follow</button></a>
+{%endif%}
+
+<p>Following Count: {{followers_count}}</p>
+<p>Tweet Count: {{tweet_count}}</p>
+
+<a href={%url 'homepage'%}><button>Home</button></a>
