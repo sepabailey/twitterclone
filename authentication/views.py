@@ -4,6 +4,7 @@ from authentication.forms import LoginForm, SignupForm
 from django.contrib.auth.decorators import login_required
 from twitteruser.models import TwitterUser
 from tweet.models import Tweet
+from django.views.generic import View
 
 
 def loginview(request):
@@ -29,11 +30,31 @@ def logoutview(request):
     return HttpResponseRedirect(reverse('homepage'))
 
 
-def adduser(request):
-    html = "signup.html"
-    form = SignupForm()
+# def adduser(request):
+#     html = "signup.html"
+#     form = SignupForm()
 
-    if request.method == "POST":
+#     if request.method == "POST":
+#         form = SignupForm(request.POST)
+#         if form.is_valid():
+#             data = form.cleaned_data
+#             new_user = TwitterUser.objects.create_user(
+#                 username=data['username'],
+#                 password=data['password1'],
+#             )
+#         new_user.save()
+#         login(request, new_user)
+#         return HttpResponseRedirect(reverse('homepage'))
+#     form = SignupForm()
+#     return render(request, html, {'form': form})
+
+
+class Adduser(View):
+    def get(self, request):
+        form = SignupForm()
+        return render(request, 'signup.html', {'form': form})
+
+    def post(self, request):
         form = SignupForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
@@ -41,8 +62,6 @@ def adduser(request):
                 username=data['username'],
                 password=data['password1'],
             )
-        new_user.save()
-        login(request, new_user)
+            new_user.save()
+            login(request, new_user)
         return HttpResponseRedirect(reverse('homepage'))
-    form = SignupForm()
-    return render(request, html, {'form': form})

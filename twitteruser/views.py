@@ -3,15 +3,27 @@ from twitteruser.models import TwitterUser
 from django.contrib.auth import login, logout, authenticate
 from tweet.models import Tweet
 from django.contrib.auth.decorators import login_required
+from django.views.generic import View
+from django.utils.decorators import method_decorator
 
 
-@login_required
-def index(request):
-    tweet_data = Tweet.objects.all()
-    user_data = TwitterUser.objects.all()
-    return render(request, 'index.html', {
-        "tweet_data": tweet_data, "user_data": user_data
-    })
+# @login_required
+# def index(request):
+#     tweet_data = Tweet.objects.all()
+#     user_data = TwitterUser.objects.all()
+#     return render(request, 'index.html', {
+#         "tweet_data": tweet_data, "user_data": user_data
+#     })
+
+
+class Index(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        user_data = TwitterUser.objects.all()
+        tweet_data = Tweet.objects.all()
+        return render(request, 'index.html', {
+            "tweet_data": tweet_data, "user_data": user_data
+        })
 
 
 # Peter helped to add a twitteruser helping with follow and unfollow
